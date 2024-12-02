@@ -41,7 +41,7 @@ export const SMapScreen = () => {
 	}, []);
 
 	return (
-		<View style={mapStyle.flex}>
+		<View style={mapStyle.flex}  >
 			{initialRegion && (
 				<MapView style={mapStyle.map} initialRegion={initialRegion}>
 					{currentLocation && (

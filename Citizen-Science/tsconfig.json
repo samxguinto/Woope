@@ -1,8 +1,12 @@
 {
-  "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "module": "esnext",
-    "jsx": "react",
-    "strict": true
-  }
+    "target": "es2016",                  // Keep as is for compatibility
+    "module": "commonjs",                // Keep as is for compatibility
+    "esModuleInterop": true,              // Keep as is for compatibility
+    "forceConsistentCasingInFileNames": true, // Keep as is for consistency
+    "strict": true,                       // Keep as is for strict type-checking
+    "skipLibCheck": true,                // Keep as is to skip library checks
+    "jsx": "react-native"                 // Add this line for React Native JSX support
+  },
+  "extends": "expo/tsconfig.base"
 }

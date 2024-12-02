@@ -1,11 +1,8 @@
 {
+  "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "target": "es2016",
-    "module": "commonjs",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "skipLibCheck": true
-  },
-  "extends": "expo/tsconfig.base"
+    "module": "commonjs",                // Keep as is for Node.js
+    "target": "es2016",                  // Keep as is for compatibility
+    "strict": true                       // Keep as is for strict type-checking
+  }
 }
