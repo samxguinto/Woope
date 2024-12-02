@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+
 import {
 	View,
 	Dimensions,
@@ -105,27 +106,34 @@ export const MapScreen = () => {
 	}, [pins, filterTag]);
 
 
-	const handleMapPress = (event: { nativeEvent: { coordinate: Location } }) => {
-		// Ignore map presses if a marker was just pressed or the details modal is open
-		if (isMarkerPressed || detailsVisible) {
-			setIsMarkerPressed(false); // Reset the marker press state after handling
-			return;
-		}
-	
-		const { coordinate } = event.nativeEvent;
-		setFormLocation(coordinate); // Save the location of the tap
-		setModalVisible(true); // Show the form modal
-	};
+const isMarkerPressedRef = useRef(false);
 
-	const handleMarkerPress = (pin: Pin) => {
-		setIsMarkerPressed(true); // Prevent map press logic
-		setSelectedPin(pin); // Set the selected pin for details
-		setDetailsVisible(true); // Show the "View Pin" modal
-	};
+const handleMarkerPress = (pin: Pin) => {
+    console.log('Marker pressed:', pin);
+    isMarkerPressedRef.current = true; // Update ref value immediately
+    setIsMarkerPressed(true); // Update state for UI
+    setSelectedPin(pin); // Set the selected pin for details
+    setDetailsVisible(true);
+};
+
+const handleMapPress = (event: { nativeEvent: { coordinate: Location } }) => {
+    if (isMarkerPressedRef.current || detailsVisible) {
+        console.log('Ignoring map press due to marker press');
+        isMarkerPressedRef.current = false; // Reset the flag
+        return;
+    }
+
+    const { coordinate } = event.nativeEvent;
+    setFormLocation(coordinate); // Save the location of the tap
+    setModalVisible(true); // Show the form modal
+};
+
+	
 	
 	const closeDetailsModal = () => {
 		setSelectedPin(null); // Clear the selected pin
 		setDetailsVisible(false); // Close the details modal
+		isMarkerPressedRef.current = false; // Reset the flag
 		setIsMarkerPressed(false); // Reset marker pressed state
 	};
 
@@ -191,7 +199,7 @@ export const MapScreen = () => {
        <MapView
 	   style={styles.map}
 	   initialRegion={initialRegion}
-	  onPress={handleMapPress} // Handle map press for adding pins
+	   onPress={handleMapPress}
 	   showsUserLocation
 	   showsMyLocationButton
 	   showsCompass
